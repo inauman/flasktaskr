@@ -1,2 +1,9 @@
 *.db
+project/_config
 .python-version
+__pycache__
+*.DS_Store
+*.pyc
+env
+venv
+*.vscode/

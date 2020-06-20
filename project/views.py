@@ -10,6 +10,7 @@ app.config.from_object('_config')
 def connect_db():
     return sqlite3.connect(app.config['DATABASE_PATH'])
 
+# decorator to enforce login for the protected pages
 def login_required(test):
     @wraps(test)
     def wrap(*args, **kwargs):
