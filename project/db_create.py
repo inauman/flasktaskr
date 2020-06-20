@@ -3,10 +3,9 @@
 import sqlite3
 
 #below two lines are for importing a package from parent.
-import sys
-sys.path.insert(0, '..')
+#import sys
+#sys.path.insert(0, '..')
 
-# Above two lines are required for importing _config from root (parent) folder
 from _config import DATABASE_PATH
 
 with sqlite3.connect(DATABASE_PATH) as connection:

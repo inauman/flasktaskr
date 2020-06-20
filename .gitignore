@@ -1,4 +1,5 @@
 *.db
+_config.py
 project/_config
 .python-version
 __pycache__
