@@ -1,6 +1,8 @@
 import sqlite3
 from functools import wraps
-from flask import Flask, flash, g, redirect, render_template, request, session, url_for
+from flask import Flask, flash, g, redirect, render_template, request, \
+    session, url_for
+from project.forms import AddTaskForm
 
 # config
 app = Flask(__name__)
@@ -48,7 +50,7 @@ def login():
 def tasks():
 
     g.db = connect_db()
-    cursor = g.db.execute('select name, due_date, priorirty, task_id from tasks \
+    cursor = g.db.execute('select name, due_date, priority, task_id from tasks \
         where status=1')
 
     # let's use list comprehension with dict to populate the 
@@ -88,7 +90,7 @@ def new_task():
         return redirect(url_for('tasks'))
     else:
         g.db.execute('INSERT INTO tasks(name, due_date, priority, status) \
-            VALUES(?, ?, ?, 1)', name, date, priority)
+            VALUES(?, ?, ?, 1)', [name, date, priority])
 
         g.db.commit()
         g.db.close()
