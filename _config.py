@@ -1,3 +1,5 @@
+# _config.py
+
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -14,3 +16,5 @@ WTF_CSRF_ENABLED = True
 SECRET_KEY = 'myprecious'
 
 DATABASE_PATH = os.path.join(basedir, DATABASE)
+
+print(DATABASE_PATH)
