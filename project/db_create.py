@@ -1,30 +1,19 @@
 # project/db_create.py
 
-import sqlite3
+
 
 #below two lines are for importing a package from parent.
-#import sys
-#sys.path.insert(0, '..')
+import sys
+sys.path.insert(0, '..')
 
-from _config import DATABASE_PATH
+from project.views import db
+from project.models import Task
+from datetime import date
 
-with sqlite3.connect(DATABASE_PATH) as connection:
-    c = connection.cursor()
+db.create_all()
 
-    query_create = """
-    CREATE TABLE tasks(task_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL, due_date TEXT NOT NULL, priority INTEGER NOT NULL,
-    status INTEGER NOT NULL)
-    """
+db.session.add(Task("Finish this tutorial", date(2020, 6, 21), 10, 1))
+db.session.add(Task("Finish Real Python", date(2020, 6, 30), 10, 1))
 
-    c.execute(query_create)
+db.session.commit()
 
-    c.execute(
-        'INSERT INTO tasks(name, due_date, priority, status)'
-        'VALUES("Finish this tutorial", "06/25/2020", 10, 1)'
-    )
-
-    c.execute(
-        'INSERT INTO tasks(name, due_date, priority, status)'
-        'VALUES("Finish Django tutorial", "06/31/2020", 10, 1)'
-    )

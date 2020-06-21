@@ -8,6 +8,7 @@
     <table>
         <tr>
             <form action="{{ url_for('new_task') }}" method="POST">
+                {{ form.csrf_token }}
                 <td>
                     <label for="name">Task Name:</label>
                     <input name="name" type="text" />
