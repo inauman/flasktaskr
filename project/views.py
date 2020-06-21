@@ -31,6 +31,7 @@ def login_required(test):
 @app.route('/logout/')
 def logout():
     session.pop('logged_in', None)
+    session.pop('user_id', None)
     flash('Goodbye')
     return redirect(url_for('login'))
 
@@ -81,8 +82,8 @@ def new_task():
                 form.due_date.data, 
                 form.priority.data,
                 datetime.datetime.utcnow(),
-                '1' # todo: hard-coded userid, change it to capture dynamically.
-                '1'
+                '1',
+                session['user_id']
             )
             db.session.add(new_task)
             db.session.commit()
