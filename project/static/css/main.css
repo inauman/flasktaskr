@@ -73,8 +73,16 @@ label {
   padding: 0.5em;
 }
 
+.inline-form .input-group{
+  display: inline-block;
+  margin: 10px 5px;
+}
 .input-group {
   margin-bottom: 15px;
+}
+
+.input-group input{
+  width: 100%;
 }
 
 .datagrid table {
