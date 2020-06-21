@@ -4,7 +4,7 @@ from flask import Flask, flash, g, redirect, render_template, request, \
     session, url_for
 from project.forms import AddTaskForm, RegisterForm, LoginForm
 from flask_sqlalchemy import SQLAlchemy
-
+import datetime
 
 # config
 app = Flask(__name__)
@@ -74,10 +74,15 @@ def new_task():
     form = AddTaskForm(request.form) 
     if request.method == 'POST':
         if form.validate_on_submit():
-            name = form.name.data
-            due_date = form.due_date.data
-            priority = form.priority.data
-            new_task = Task(name, due_date, priority, '1')
+
+            new_task = Task(
+                form.name.data, 
+                form.due_date.data, 
+                form.priority.data,
+                datetime.datetime.utcnow(),
+                '1' # todo: hard-coded userid, change it to capture dynamically.
+                '1'
+            )
             db.session.add(new_task)
             db.session.commit()
             flash("New entry was successfully posted. Thanks.")
