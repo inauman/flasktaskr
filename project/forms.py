@@ -16,3 +16,11 @@ class AddTaskForm(Form):
         ]
     )
     status = IntegerField('Status')
+    
+    # print(f"""
+    # task id: {task_id} \n
+    # name: {name} \n
+    # due_date: {due_date} \n
+    # priority: {priority} \n
+    # status: {status}
+    # """)

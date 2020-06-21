@@ -4,13 +4,16 @@ from flask import Flask, flash, g, redirect, render_template, request, \
     session, url_for
 from project.forms import AddTaskForm
 from flask_sqlalchemy import SQLAlchemy
-from project.models import Task
+
 
 # config
 app = Flask(__name__)
 app.config.from_object('_config')
 db = SQLAlchemy(app)
 
+# this 'Model' can only be imported 
+# after initializing the database
+from project.models import Task
 
 # decorator to enforce login for the protected pages
 def login_required(test):
@@ -74,6 +77,8 @@ def new_task():
             db.session.add(new_task)
             db.session.commit()
             flash("New entry was successfully posted. Thanks.")
+        else:
+            flash("Sorry! Enter the data in correct format")
     return redirect(url_for('tasks'))
 
 # Mark task complete
