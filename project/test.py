@@ -29,7 +29,7 @@ class AllTests(unittest.TestCase):
         db.session.remove()
         db.drop_all()
     
-    # each test should start with 'test'
+
     def test_user_setup(self):
         new_user = User("michael", "michael@cycle.org", "michaelherman")
         db.session.add(new_user)
@@ -45,6 +45,15 @@ class AllTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Please login to access your task list', response.data)
 
+    # helper function
+    def login(self, name, password):
+        return self.app.post('/', data=dict(
+            name=name, password=password), follow_redirects=True
+        )
+    
+    def test_users_cannot_login_unless_registered(self):
+        response = self.login('foo', 'bar')
+        self.assertIn(b'Invalid username or password', response.data)
 
 if __name__ == "__main__":
     unittest.main()
