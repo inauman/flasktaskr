@@ -40,5 +40,11 @@ class AllTests(unittest.TestCase):
             t.name
         assert t.name == "michael"
 
+    def test_form_is_present(self):     # login form
+        response = self.app.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Please login to access your task list', response.data)
+
+
 if __name__ == "__main__":
     unittest.main()
