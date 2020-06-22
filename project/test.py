@@ -55,5 +55,16 @@ class AllTests(unittest.TestCase):
         response = self.login('foo', 'bar')
         self.assertIn(b'Invalid username or password', response.data)
 
+    # helper function
+    def register(self, name, email, password, confirm):
+        return self.app.post('register/', data=dict(
+            name=name, email=email, password=password, confirm=confirm), follow_redirects=True
+        )
+    
+    def test_registered_users_can_login(self):
+        self.register('Nauman', 'Nauman@Zorigs.Com', 'python', 'python')
+        response = self.login('Nauman', 'python')
+        self.assertIn(b'Welcome', response.data)
+
 if __name__ == "__main__":
     unittest.main()
