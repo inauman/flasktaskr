@@ -73,10 +73,10 @@ def tasks():
 @app.route('/add/', methods=['POST'])
 @login_required
 def new_task():
+    error = None
     form = AddTaskForm(request.form) 
     if request.method == 'POST':
         if form.validate_on_submit():
-
             new_task = Task(
                 form.name.data, 
                 form.due_date.data, 
@@ -88,9 +88,12 @@ def new_task():
             db.session.add(new_task)
             db.session.commit()
             flash("New entry was successfully posted. Thanks.")
+            return redirect(url_for('tasks'))
         else:
-            flash("Sorry! Enter the data in correct format")
-    return redirect(url_for('tasks'))
+            return render_template('tasks.html', form=form, error=error)
+    return render_template('tasks.html', form=form, error=error)
+
+    
 
 # Mark task complete
 @app.route('/complete/<int:task_id>/')
@@ -128,3 +131,9 @@ def register():
             flash('Thanks for registering. Please login.')
             return redirect(url_for('login'))
     return render_template('register.html', form=form, error=error)
+
+def flash_errors(form):
+    for field, errors in form.errors.items():
+        for error in errors:
+            flash(f"Error in the {getattr(form, field).label.text} field - {error}", 'error')
+

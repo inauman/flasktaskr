@@ -20,11 +20,6 @@ h2 {
   font-size: 1.5em;
 }
 
-label {
-  display: block;
-  font-weight: bold;
-}
-
 .page {
   margin: 2em auto;
   width: 50em;
@@ -69,20 +64,9 @@ label {
 }
 
 .error {
-  background: #F0D6D6;
-  padding: 0.5em;
-}
-
-.inline-form .input-group{
-  display: inline-block;
-  margin: 10px 5px;
-}
-.input-group {
-  margin-bottom: 15px;
-}
-
-.input-group input{
-  width: 100%;
+  color: red;
+  font-size: .8em;
+  background-color: #FFFFFF;
 }
 
 .datagrid table {
