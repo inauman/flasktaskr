@@ -34,7 +34,6 @@ class AllTests(unittest.TestCase):
         new_user = User("michael", "michael@cycle.org", "michaelherman")
         db.session.add(new_user)
         db.session.commit()
-
         test =  db.session.query(User).all()
         for t in test:
             t.name
@@ -70,6 +69,12 @@ class AllTests(unittest.TestCase):
         self.register('Nauman', 'Nauman@Zorigs.Com', 'python', 'python')
         response = self.login('alert("alert box!");', 'foo')
         self.assertIn(b'Invalid username or password', response.data)
-        
+    
+    def test_form_is_present_on_register_page(self):
+        response = self.app.get('register/')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Please register to access the task list', response.data)
+
+
 if __name__ == "__main__":
     unittest.main()
