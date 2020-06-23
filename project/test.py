@@ -89,5 +89,18 @@ class AllTests(unittest.TestCase):
         response = self.register('Mayesha', 'mayesha@mayesha.com', 'python', 'python')
         self.assertIn(b'The username and/or email already exist', response.data)
 
+    def logout(self):
+        return self.app.get('logout/', follow_redirects=True)
+    
+    def test_logged_in_users_can_logout(self):
+        self.register('Mayesha', 'mayesha@mayesha.com', 'python', 'python')
+        self.login('Mayesha', 'python')
+        response = self.logout()
+        self.assertIn(b'Goodbye', response.data)
+
+    def test_not_logged_in_users_cannot_logout(self):
+        response = self.logout()
+        self.assertNotIn(b'Goodbye', response.data)
+
 if __name__ == "__main__":
     unittest.main()
