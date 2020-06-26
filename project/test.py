@@ -102,5 +102,12 @@ class AllTests(unittest.TestCase):
         response = self.logout()
         self.assertNotIn(b'Goodbye', response.data)
 
+    def test_logged_in_users_can_access_tasks_age(self):
+        self.register('Mayesha', 'mayesha@mayesha.com', 'python', 'python')
+        self.login('Mayesha', 'python01')
+        response = self.app.get('tasks/', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'You need to login first', response.data)
+
 if __name__ == "__main__":
     unittest.main()
