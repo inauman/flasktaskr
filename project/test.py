@@ -108,6 +108,27 @@ class AllTests(unittest.TestCase):
         response = self.app.get('tasks/', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'You need to login first', response.data)
+    
+    def create_user(self, name, email, password):
+        new_user = User(name=name, email=email, password=password)
+        db.session.add(new_user)
+        db.session.commit()
+
+    def create_task(self):
+        return self.app.post('add/', data = dict(
+            name = 'Go to the Bank',
+            due_date = '10/08/2016',
+            priority = '1',
+            posted_date = '10/08/2016',
+            status = '1'
+        ), follow_redirects = True)
+    
+    def test_users_can_add_task(self):
+        self.create_user('Nauman', 'nauman@nauman.com', 'python')
+        self.login('Nauman', 'python')
+        self.app.get('tasks/', follow_redirects=True)
+        response = self.create_task()
+        self.assertIn(b'New entry was successfully posted.', response.data)
 
 if __name__ == "__main__":
     unittest.main()
