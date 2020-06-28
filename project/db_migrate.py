@@ -2,11 +2,11 @@
 import sys
 sys.path.insert(0, '..')
 from project.views import db
-from project._config import DATABASE_PATH
+from project.config import DATABASE_PATH
 
 import sqlite3
 from datetime import datetime
-
+'''
 with sqlite3.connect(DATABASE_PATH) as connection:
     c = connection.cursor()
 
@@ -37,3 +37,19 @@ with sqlite3.connect(DATABASE_PATH) as connection:
     )
 
     c.execute("DROP TABLE old_tasks")
+'''
+
+with sqlite3.connect(DATABASE_PATH) as connection:
+    c = connection.cursor()
+
+    c.execute("ALTER TABLE users RENAME TO old_users")
+
+    db.create_all()
+
+    c.execute("SELECT name, email, password FROM old_users ORDER BY id ASC")
+
+    data = [(r[0], r[1], r[2], 'user') for r in c.fetchall()]
+
+    c.executemany("INSERT INTO users(name, email, password, role) VALUES(?, ?, ?, ?)", data)
+
+    c.execute("DROP TABLE old_users")

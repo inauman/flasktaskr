@@ -109,5 +109,16 @@ class AllTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'You need to login first', response.data)
 
+    def test_default_user_role(self):
+        db.session.add(
+            User('Nauman', 'Nauman@Nauman.com', 'python')
+        )
+        db.session.commit()
+        users = db.session.query(User).all()
+        print('************')
+        print(users)
+        for user in users:
+            self.assertEquals(user.role, 'user')
+
 if __name__ == "__main__":
     unittest.main()

@@ -155,7 +155,20 @@ class AllTests(unittest.TestCase):
         self.app.get('tasks/', follow_redirects=True)
         response = self.app.get('complete/1/', follow_redirects=True)
         self.assertNotIn(
-            b'The task is complete', response.data)
+            b'The task is complete.', response.data)
+        self.assertIn(b'You can only update tasks that belong to you.', response.data)
+    
+    def test_users_cannot_delete_tasks_that_are_not_created_by_them(self):
+        self.create_user('Nauman', 'Nauman@Nauman.com', 'python')
+        self.login('Nauman', 'python')
+        self.app.get('tasks/', follow_redirects=True)
+        self.create_task()
+        self.logout()
+        self.create_user('Mayesha', 'Mayesha@Mayesha.com', 'python')
+        self.login('Mayesha', 'python')
+        response = self.app.get('delete/1/', follow_redirects=True)
+        self.assertIn(b'You can only delete tasks that belong to you.', response.data)
+
 
 if __name__ == "__main__":
     unittest.main()
