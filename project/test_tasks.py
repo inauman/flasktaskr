@@ -5,7 +5,7 @@ import sys
 sys.path.insert(0,'..')
 
 from project.views import app, db
-from project._config import basedir
+from project.config import basedir
 from project.models import User
 
 TEST_DB='test.db'
@@ -28,21 +28,6 @@ class AllTests(unittest.TestCase):
     def tearDown(self):
         db.session.remove()
         db.drop_all()
-    
-
-    def test_user_setup(self):
-        new_user = User("michael", "michael@cycle.org", "michaelherman")
-        db.session.add(new_user)
-        db.session.commit()
-        test =  db.session.query(User).all()
-        for t in test:
-            t.name
-        assert t.name == "michael"
-
-    def test_login_form_is_present(self):
-        response = self.app.get('/')
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Please login to access your task list', response.data)
 
     # helper function
     def login(self, name, password):
@@ -149,7 +134,7 @@ class AllTests(unittest.TestCase):
         self.app.get('tasks/', follow_redirects=True)
         self.create_task()
         response = self.app.get('complete/1/', follow_redirects=True)
-        self.assertIn(b'The task was marked as complete', response.data)
+        self.assertIn(b'The task is complete', response.data)
 
     def test_users_can_delete_tasks(self):
         self.create_user('Nauman', 'nauman@nauman.com', 'python')
@@ -165,8 +150,8 @@ class AllTests(unittest.TestCase):
         self.app.get('tasks/', follow_redirects=True)
         self.create_task()
         self.logout()
-        self.create_user('Mayesha', 'nauman@nauman.com', 'admin')
-        self.login('Mayesha', 'admin')
+        self.create_user('Mayesha', 'mayesha@mayesha.com', 'python')
+        self.login('Mayesha', 'python')
         self.app.get('tasks/', follow_redirects=True)
         response = self.app.get('complete/1/', follow_redirects=True)
         self.assertNotIn(
