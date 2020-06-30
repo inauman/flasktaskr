@@ -4,9 +4,9 @@ import unittest
 import sys
 sys.path.insert(0,'..')
 
-from project.views import app, db
-from project.config import basedir
-from project.models import User
+from project import app, db
+from project._config import basedir
+from project.models import Task, User
 
 TEST_DB='test.db'
 
@@ -87,7 +87,7 @@ class AllTests(unittest.TestCase):
         self.register('Mayesha', 'mayesha@mayesha.com', 'python', 'python')
         self.app.get('register/', follow_redirects=True)
         response = self.register('Mayesha', 'mayesha@mayesha.com', 'python', 'python')
-        self.assertIn(b'The username and/or email already exist', response.data)
+        self.assertIn(b'That username and/or email already exist', response.data)
 
     def logout(self):
         return self.app.get('logout/', follow_redirects=True)
