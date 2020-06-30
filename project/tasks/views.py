@@ -8,7 +8,7 @@ from flask import flash, redirect, render_template, \
 
 from .forms import AddTaskForm
 from project import db
-from project.models import Task
+from project.models import Task, User
 
 
 ################
@@ -35,12 +35,12 @@ def login_required(test):
 
 def open_tasks():
     return db.session.query(Task).filter_by(
-        status='1').order_by(Task.due_date.asc())
+        status='1', user_id=session['user_id']).order_by(Task.due_date.asc())
 
 
 def closed_tasks():
     return db.session.query(Task).filter_by(
-        status='0').order_by(Task.due_date.asc())
+        status='0', user_id=session['user_id']).order_by(Task.due_date.asc())
 
 
 ################
