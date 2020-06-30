@@ -1,8 +1,7 @@
-#below two lines are for importing a package from parent or sibling.
-import sys
-sys.path.insert(0, '..')
-from project.views import db
-from project.config import DATABASE_PATH
+# db_migrate.py
+
+from project import db
+from project._config import DATABASE_PATH
 
 import sqlite3
 from datetime import datetime

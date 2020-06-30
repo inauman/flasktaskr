@@ -1,9 +1,5 @@
 import datetime
-
-#below two lines are for importing a package from parent or sibling.
-import sys
-sys.path.insert(0, '..')
-from project.views import db
+from project import db
 
 class Task(db.Model):
 
