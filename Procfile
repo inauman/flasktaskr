@@ -1,2 +1,2 @@
 web: python run.py
-python db_create.py
+init: python db_create.py
