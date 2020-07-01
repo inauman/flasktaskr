@@ -198,5 +198,11 @@ class AllTests(unittest.TestCase):
         response = self.app.get('delete/1/', follow_redirects=True)
         self.assertNotIn(b'You can only delete tasks that belong to you', response.data)
 
+    def test_task_template_displays_logged_in_user_name(self):
+        self.register('Nauman', 'Nauman@Nauman.com', 'python', 'python')
+        self.login('Nauman', 'python')
+        response = self.app.get('tasks/', follow_redirects=True)
+        self.assertIn(b'Nauman', response.data)
+        
 if __name__ == "__main__":
     unittest.main()
