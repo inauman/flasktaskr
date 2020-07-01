@@ -34,13 +34,21 @@ def login_required(test):
 
 
 def open_tasks():
-    return db.session.query(Task).filter_by(
-        status='1', user_id=session['user_id']).order_by(Task.due_date.asc())
+    if session['role'] == 'admin':
+        return db.session.query(Task).filter_by(
+        status='1').order_by(Task.due_date.asc())
+    else:
+        return db.session.query(Task).filter_by(
+            status='1', user_id=session['user_id']).order_by(Task.due_date.asc())
 
 
 def closed_tasks():
-    return db.session.query(Task).filter_by(
-        status='0', user_id=session['user_id']).order_by(Task.due_date.asc())
+    if session['role'] == 'admin':
+        return db.session.query(Task).filter_by(
+        status='1').order_by(Task.due_date.asc())
+    else:
+        return db.session.query(Task).filter_by(
+            status='1', user_id=session['user_id']).order_by(Task.due_date.asc())
 
 
 ################
