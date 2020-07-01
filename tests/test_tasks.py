@@ -1,9 +1,6 @@
 import os
 import unittest
 
-import sys
-sys.path.insert(0,'..')
-
 from project import app, db
 from project._config import basedir
 from project.models import Task, User
@@ -35,15 +32,36 @@ class AllTests(unittest.TestCase):
             name=name, password=password), follow_redirects=True
         )
     
-    def test_unregistered_users_cannot_login(self):
-        response = self.login('foo', 'bar')
-        self.assertIn(b'Invalid username or password', response.data)
-
-    # helper function
     def register(self, name, email, password, confirm):
         return self.app.post('register/', data=dict(
             name=name, email=email, password=password, confirm=confirm), follow_redirects=True
         )
+
+    def logout(self):
+        return self.app.get('logout/', follow_redirects=True)
+
+    def create_user(self, name, email, password):
+        new_user = User(name=name, email=email, password=password)
+        db.session.add(new_user)
+        db.session.commit()
+
+    def create_task(self):
+        return self.app.post('add/', data = dict(
+            name = 'Go to the Bank',
+            due_date = '10/08/2016',
+            priority = '1',
+            posted_date = '10/08/2016',
+            status = '1'
+        ), follow_redirects = True)
+
+    def create_admin_user(self):
+        new_user = User('Superman', 'admin@admin.com', 'admin', 'admin')
+        db.session.add(new_user)
+        db.session.commit()
+
+    def test_unregistered_users_cannot_login(self):
+        response = self.login('foo', 'bar')
+        self.assertIn(b'Invalid username or password', response.data)
     
     def test_registered_users_can_login(self):
         self.register('Nauman', 'Nauman@Zorigs.Com', 'python', 'python')
@@ -73,9 +91,6 @@ class AllTests(unittest.TestCase):
         self.app.get('register/', follow_redirects=True)
         response = self.register('Mayesha', 'mayesha@mayesha.com', 'python', 'python')
         self.assertIn(b'That username and/or email already exist', response.data)
-
-    def logout(self):
-        return self.app.get('logout/', follow_redirects=True)
     
     def test_logged_in_users_can_logout(self):
         self.register('Mayesha', 'mayesha@mayesha.com', 'python', 'python')
@@ -93,20 +108,6 @@ class AllTests(unittest.TestCase):
         response = self.app.get('tasks/', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'You need to login first', response.data)
-    
-    def create_user(self, name, email, password):
-        new_user = User(name=name, email=email, password=password)
-        db.session.add(new_user)
-        db.session.commit()
-
-    def create_task(self):
-        return self.app.post('add/', data = dict(
-            name = 'Go to the Bank',
-            due_date = '10/08/2016',
-            priority = '1',
-            posted_date = '10/08/2016',
-            status = '1'
-        ), follow_redirects = True)
     
     def test_users_can_add_task(self):
         self.create_user('Nauman', 'nauman@nauman.com', 'python')
@@ -169,11 +170,6 @@ class AllTests(unittest.TestCase):
         response = self.app.get('delete/1/', follow_redirects=True)
         self.assertIn(b'You can only delete tasks that belong to you.', response.data)
 
-    def create_admin_user(self):
-        new_user = User('Superman', 'admin@admin.com', 'admin', 'admin')
-        db.session.add(new_user)
-        db.session.commit()
-
     def test_admin_users_can_complete_tasks_that_are_not_created_by_them(self):
         self.create_user('Nauman', 'Nauman@Nauman.com', 'python')
         self.login('Nauman', 'python')
@@ -203,6 +199,18 @@ class AllTests(unittest.TestCase):
         self.login('Nauman', 'python')
         response = self.app.get('tasks/', follow_redirects=True)
         self.assertIn(b'Nauman', response.data)
+    
+    def test_users_cannot_see_task_modify_links_for_tasks_not_created_by_them(self):
+        self.register('Nauman', 'nauman@realpython.com', 'python', 'python')
+        self.login('Nauman', 'python')
+        self.app.get('tasks/', follow_redirects=True)
+        self.create_task()
+        self.logout()
+        self.register('Mayesha', 'mayesha@realpython.com', 'python', 'python')
+        response = self.login('Mayesha', 'python')
+        self.app.get('tasks/', follow_redirects=True)
+        self.assertNotIn(b'Mark as complete', response.data)
+        self.assertNotIn(b'Delete', response.data)
         
 if __name__ == "__main__":
     unittest.main()
