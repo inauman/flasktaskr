@@ -1,4 +1,4 @@
-# project/_config.py
+# project/config.py
 
 import os
 

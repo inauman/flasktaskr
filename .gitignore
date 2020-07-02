@@ -1,5 +1,4 @@
 *.db
-project/_config
 .python-version
 __pycache__
 *.DS_Store

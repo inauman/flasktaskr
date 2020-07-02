@@ -2,7 +2,7 @@ import os
 import unittest
 
 from project import app, db, bcrypt
-from project._config import basedir
+from project.config import basedir
 from project.models import Task, User
 
 TEST_DB='test.db'

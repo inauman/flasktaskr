@@ -1,13 +1,14 @@
 #project/__init__.py
 
-import datetime
+import datetime, os
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 
 
 app = Flask(__name__)
-app.config.from_pyfile('_config.py')
+#app.config.from_pyfile('config.py')
+app.config.from_object(os.environ['APP_SETTINGS'])
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
