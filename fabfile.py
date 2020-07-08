@@ -1,23 +1,27 @@
-from fabric import Connection
 
-with Connection('localhost') as c:
-    c.local("echo 'Hi there'")
-    #c.local("exec zsh")
-    #c.local("nosetests -v")
-    message = input("Enter a git commit message: ")
-    c.local(f"git add . && git commit -am '{message}'")
-    c.local("git push origin master")
-    def test():
-        c.local("nosetests -v")
+from fabric import Connection, task
 
-    def commit():
+with Connection('localhost') as ctx:
+    # c.local("echo 'Hi there'")
+    # #c.local("exec ~/.zshrc")
+    # c.local("nosetests -v")
+    # message = input("Enter a git commit message: ")
+    # c.local(f"git add . && git commit -am '{message}'")
+    # c.local("git push origin master")
+
+    #@task
+    #def test(ctx):
+        #ctx.run("nosetests -v")
+    @task
+    def commit(ctx):
         message = input("Enter a git commit message: ")
-        c.local(f"git add . && git commit -am '{message}'")
+        ctx.run(f"git add . && git commit -am '{message}'")
+    @task
+    def push(ctx):
+        ctx.run("git push origin master")
 
-    def push():
-        c.local("git push origin master")
-
-    def prepare():
-        test()
-        commit()
-        push()
+    @task
+    def prepare(ctx):
+        #test(ctx)
+        commit(ctx)
+        push(ctx)
