@@ -1,22 +1,17 @@
-#!/usr/python/env python
-from fabric import Connection, task
+from fabric.api import local
 
-with Connection('localhost') as ctx:
+def test(): 
+    local("nosetests -v")
 
-    @task
-    def test(ctx):
-        ctx.run("source .env")
-        #ctx.run("nosetests -v")
-    @task
-    def commit(ctx):
-        message = input("Enter a git commit message: ")
-        ctx.run(f"git add . && git commit -am '{message}'")
-    @task
-    def push(ctx):
-        ctx.run("git push origin master")
+def commit():
+    message = input("Enter a git commit message: ")
+    local(f"git add . && git commit -am '{message}'")
 
-    @task
-    def prepare(ctx):
-        test(ctx)
-        commit(ctx)
-        push(ctx)
+def push():
+    local("git push origin master")
+
+
+def prepare():
+    test()
+    commit()
+    push()
