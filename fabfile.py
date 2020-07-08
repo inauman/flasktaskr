@@ -1,4 +1,4 @@
-
+#!/usr/python/env python
 from fabric import Connection, task
 
 with Connection('localhost') as ctx:
@@ -9,9 +9,9 @@ with Connection('localhost') as ctx:
     # c.local(f"git add . && git commit -am '{message}'")
     # c.local("git push origin master")
 
-    #@task
-    #def test(ctx):
-        #ctx.run("nosetests -v")
+    @task
+    def test(ctx):
+        ctx.run("nosetests -v")
     @task
     def commit(ctx):
         message = input("Enter a git commit message: ")
@@ -22,6 +22,6 @@ with Connection('localhost') as ctx:
 
     @task
     def prepare(ctx):
-        #test(ctx)
+        test(ctx)
         commit(ctx)
         push(ctx)
