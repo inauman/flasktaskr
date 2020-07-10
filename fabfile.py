@@ -36,3 +36,4 @@ def deploy_stage():
 def rollback():
     local("heroku rollback --app nflask-stage")
 
+ 
