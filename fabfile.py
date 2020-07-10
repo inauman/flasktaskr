@@ -1,7 +1,7 @@
 from fabric.api import local
 
 def test(): 
-    local("nosetests -v")
+    local("nosetests --with-coverage --cover-erase --cover-package=project")
 
 def commit():
     message = input("Enter a git commit message: ")
@@ -9,7 +9,6 @@ def commit():
 
 def push():
     local("git push origin master")
-
 
 def prepare():
     test()
