@@ -26,11 +26,9 @@ def heroku_stage():
     local("git push stage master")
 
 def heroku_test():
-    local("heroku run nosetests -v")
+    local("heroku run nosetests -v --app nflask-stage")
 
 def deploy_stage():
-    pull()
-    test()
-    commit()
+    prepare()
     heroku_stage()
     heroku_test()
