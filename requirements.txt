@@ -10,8 +10,9 @@ coverage==5.1
 cryptography==2.9.2
 curtsies==0.3.1
 dnspython==1.16.0
+ecdsa==0.15
 email-validator==1.1.1
-fabric==2.5.0
+Fabric3==1.14.post1
 Flask==1.1.1
 Flask-Bcrypt==0.7.1
 Flask-SQLAlchemy==2.4.1
@@ -33,6 +34,7 @@ post==2019.4.13
 psycopg2-binary==2.8.5
 public==2019.4.13
 pycparser==2.20
+pycrypto==2.6.1
 Pygments==2.6.1
 PyNaCl==1.4.0
 query-string==2019.4.13

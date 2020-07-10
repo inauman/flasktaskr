@@ -22,5 +22,15 @@ def prepare():
 def pull():
     local("git pull origin master")
 
-def heroku():
+def heroku_stage():
     local("git push stage master")
+
+def heroku_test():
+    local("heroku run nosetests -v")
+
+def deploy_stage():
+    pull()
+    test()
+    commit()
+    heroku_stage()
+    heroku_test()
