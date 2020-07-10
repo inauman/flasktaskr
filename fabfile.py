@@ -32,3 +32,7 @@ def deploy_stage():
     prepare()
     heroku_stage()
     heroku_test()
+
+def rollback():
+    local("heroku rollback --app nflask-stage")
+
