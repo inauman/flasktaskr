@@ -1,13 +1,11 @@
 # project/api/views.py
 
 from datetime import datetime
-from functools import wraps
 from flask import flash, redirect, jsonify, \
     session, url_for, Blueprint, make_response, request
 
 from project import db
 from project.models import Task
-
 
 ################
 #### config ####
@@ -15,31 +13,17 @@ from project.models import Task
 
 api_blueprint = Blueprint('api', __name__)
 
-
 ##########################
 #### helper functions ####
 ##########################
-
-def login_required(test):
-    @wraps(test)
-    def wrap(*args, **kwargs):
-        if 'logged_in' in session:
-            return test(*args, **kwargs)
-        else:
-            flash('You need to login first.')
-            return redirect(url_for('users.login'))
-    return wrap
-
 
 def open_tasks():
     return db.session.query(Task).filter_by(
         status='1').order_by(Task.due_date.asc())
 
-
 def closed_tasks():
     return db.session.query(Task).filter_by(
         status='0').order_by(Task.due_date.asc())
-
 
 ################
 #### routes ####
@@ -64,7 +48,6 @@ def api_tasks():
         return jsonify(items=json_results)
     elif request.method == 'POST':
         task_data = request.get_json()
-        print(task_data)
         due_date = datetime.strptime(task_data['due_date'], '%m/%d/%Y').date()
         posted_date = datetime.strptime(task_data['posted_date'], '%m/%d/%Y').date()
         new_task = Task(
