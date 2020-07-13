@@ -1,7 +1,7 @@
 # tests/test_api.py
 
 
-import os
+import os, json
 import unittest
 from datetime import date
 
@@ -9,9 +9,7 @@ from project import app, db
 from config import basedir
 from project.models import Task
 
-
 TEST_DB = 'test.db'
-
 
 class APITests(unittest.TestCase):
 
@@ -92,6 +90,18 @@ class APITests(unittest.TestCase):
         self.assertEquals(response.mimetype, 'application/json')
         self.assertIn(b'Element does not exist', response.data)
 
+    def test_add_new_task(self):
+        task = {
+            "name" : "Hello World",
+            "due_date" : "2021, 10, 22",
+            "priority" : "10",
+            "posted_date": "2020, 10, 22",
+            "status": 1,
+            "user_id": 1
+        }
+        response = self.app.post('api/v1/tasks/', data=json.dumps(task), content_type="application/json", follow_redirects = True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.mimetype, 'application/json')
 
 if __name__ == "__main__":
     unittest.main()
