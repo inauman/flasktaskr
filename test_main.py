@@ -63,7 +63,7 @@ class MainTests(unittest.TestCase):
     def test_index(self):
         """ Ensure Flask was setup correctly. """
         response = self.app.get("/", content_type='html/text')
-        self.assetEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     if __name__ == "__main__":
         unittest.main()
