@@ -93,9 +93,9 @@ class APITests(unittest.TestCase):
     def test_add_new_task(self):
         task = {
             "name" : "Hello World",
-            "due_date" : "2021, 10, 22",
+            "due_date" : "10/22/2021",
             "priority" : "10",
-            "posted_date": "2020, 10, 22",
+            "posted_date": "10/22/2020",
             "status": 1,
             "user_id": 1
         }
