@@ -1,16 +1,18 @@
-# specify language
 language:
-  - python
-# specify python version(s)
+- python
 python:
-  - "3.8.3"
-# install dependencies
+- 3.8.3
 install:
-  - pip install -r requirements.txt
-
+- pip install -r requirements.txt
 env:
-  - APP_SETTINGS="config.DevelopmentConfig"
-# run tests
+- APP_SETTINGS="config.DevelopmentConfig"
 script:
-  - nosetests
-
+- nosetests
+deploy:
+  provider: heroku
+  api_key:
+    secure: BK0RNEQDpAPe7IA3LVi9bQHcEamh8Nqzrtn7lbD8ayncIXvvLr3GjI9JvNU06JHmPEDRMbBseRCGWz3wjFagHPgxy9MZtb2XDdRlcjKMST+kntAHEhE9RPwCXpe5uI3PIbDtNfsle5X6r8JTxJze+mqbU5Q3HIScOesynqLYLEwKZz1kEM6xcOYiaPa0IE2wDw03Qc+ljzW8CvFJOtmM/13SKBJv5ChiRB35s3Ns/0Hmsi9OWM2v+n3wBMWnv6GMSZ8PrW2j7Ab5YX8TWy6ybDGzfWfXgxj7zya+CgYLEGCEoFUhpwE/P+oxkLM1coX1A2EeLQY7Z8dyBnK7xkGtgILHdEf2aeITXw4UtDakd+OWB8hVsyVPuvMVyK9icjRU47MtN+VpQIhH2MZ6tSmgHu7ypf37WQzEIboch4LphJAzwohP0Fm8q5gwvcrSCAuSq7b2fEy+yWtll6WmOWX9cRPHs5sCFqapPXpigObVvrChLm6nBZ6kDO8z6Z/QRREg4eX/5M93BuTqxC7LlN8NH5jQwrAI0g7iX7suOhIYRnl53BSAKf+0Smsfyz/+HK+8zFI0HO4K1v/5hP/cinPY2hwsN71aSW6As28b/9UuQ0SchCgEAqluV+pK1bqfkMCd1N6YYTsW8lzLfGvhT116IN/JNc0aiRgc+Jms0hZHG0Y=
+  app: nflask-stage
+  on:
+    repo: inauman/flasktaskr
+  skip_cleanup: 'true'
