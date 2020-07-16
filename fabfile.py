@@ -12,13 +12,10 @@ def commit():
     local(f"git add . && git commit -am '{message}'")
 
 def push():
-    local(f"git push origin master") #GitLab
-
-    # As TravisCI is integrated with GitHub
-    # Ask: Feature Branch vs. Master (Ideally Feature)
     local("git branch")
     branch = input("Which branch do you want to push to? ")
     local(f"git push github {branch}") #GitHub
+    local(f"git push origin {branch}") #GitLab
 
 def prepare():
     test()

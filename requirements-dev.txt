@@ -16,6 +16,3 @@ coverage==5.2
 
 # Module required for email validation in unit testing
 email-validator==1.1.1
-
-# Module for Postgres on Heroku
-psycopg2-binary==2.8.5
