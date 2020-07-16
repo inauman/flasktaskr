@@ -10,6 +10,7 @@ class Config(object):
     TESTING = False 
 
     if os.environ.get('DATABASE_URL') is None:
+        SQLALCHEMY_TRACK_MODIFICATIONS = False # This flag is required to turn off deprecation warning
         SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'flasktaskr.db')
     else:
          SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
